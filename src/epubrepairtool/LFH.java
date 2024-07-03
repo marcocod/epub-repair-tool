@@ -17,24 +17,24 @@ import java.nio.ByteOrder;
  */
 public class LFH {
     
-    private final static int LFH_SIGNATURE=0x04034b50;
-    private final static int BASE_SIZE=30;
+    private final static long LFH_SIGNATURE=0x04034b50;
+    private final static long BASE_SIZE=30;
     
     // position
     private long pos;
     
     // content
-    private int signature;          //  0- 4
-    private short version;          //  4- 6
-    private short flags;            //  6- 8           
-    private short compression;      //  8-10
-    private short lastModifTime;    // 10-12
-    private short lastModifDate;    // 12-14
-    private int crc32;              // 14-18
-    private int compressedSize;     // 18-22
-    private int uncompressedSize;   // 22-26
-    private short fileNameLength;   // 26-28
-    private short extraFieldLength; // 28-30
+    private long signature;        //  0- 4
+    private long version;          //  4- 6
+    private long flags;            //  6- 8           
+    private long compression;      //  8-10
+    private long lastModifTime;    // 10-12
+    private long lastModifDate;    // 12-14
+    private long crc32;            // 14-18
+    private long compressedSize;   // 18-22
+    private long uncompressedSize; // 22-26
+    private long fileNameLength;   // 26-28
+    private long extraFieldLength; // 28-30
     private byte[] filename;
     private byte[] extraField;
     
@@ -46,25 +46,26 @@ public class LFH {
             LFH header=new LFH();
             header.pos=pos;
 
-            ByteBuffer buffer=ByteBuffer.allocate(BASE_SIZE);
+            ByteBuffer buffer=ByteBuffer.allocate((int)BASE_SIZE);
             buffer.order(ByteOrder.LITTLE_ENDIAN);
             byte[] array=buffer.array();
 
             rafid.seek(pos);
             rafid.read(array);
             
-            header.signature        = buffer.getInt(   0);
+            header.signature        = Utils.buildUnsigned(buffer.getInt(   0));
             if(header.signature!=LFH_SIGNATURE) return null;
-            header.version          = buffer.getShort( 4);
-            header.flags            = buffer.getShort( 6);
-            header.compression      = buffer.getShort( 8);
-            header.lastModifTime    = buffer.getShort(10);
-            header.lastModifDate    = buffer.getShort(12);
-            header.crc32            = buffer.getInt(  14);
-            header.compressedSize   = buffer.getInt(  18);
-            header.uncompressedSize = buffer.getInt(  22);
-            header.fileNameLength   = buffer.getShort(26);
-            header.extraFieldLength = buffer.getShort(28);
+            
+            header.version          = Utils.buildUnsigned(buffer.getShort( 4));
+            header.flags            = Utils.buildUnsigned(buffer.getShort( 6));
+            header.compression      = Utils.buildUnsigned(buffer.getShort( 8));
+            header.lastModifTime    = Utils.buildUnsigned(buffer.getShort(10));
+            header.lastModifDate    = Utils.buildUnsigned(buffer.getShort(12));
+            header.crc32            = Utils.buildUnsigned(buffer.getInt(  14));
+            header.compressedSize   = Utils.buildUnsigned(buffer.getInt(  18));
+            header.uncompressedSize = Utils.buildUnsigned(buffer.getInt(  22));
+            header.fileNameLength   = Utils.buildUnsigned(buffer.getShort(26));
+            header.extraFieldLength = Utils.buildUnsigned(buffer.getShort(28));
             
             header.filename   = new byte[(int)header.fileNameLength];
             header.extraField = new byte[(int)header.extraFieldLength];
@@ -79,11 +80,11 @@ public class LFH {
     }
     
     public long size(){
-        return (long)BASE_SIZE+(long)this.fileNameLength+(long)this.extraFieldLength;
+        return BASE_SIZE+this.fileNameLength+this.extraFieldLength;
     }
     
-    public int getFilenameLength(){
-        return (int)this.fileNameLength;
+    public long getFilenameLength(){
+        return this.fileNameLength;
     }
     
     public byte[] getRawFilename(){

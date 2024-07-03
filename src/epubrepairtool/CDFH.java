@@ -7,9 +7,9 @@ package epubrepairtool;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 
 /**
  *
@@ -17,30 +17,30 @@ import java.nio.ByteOrder;
  */
 public class CDFH {
     
-    private final static int CDFH_SIGNATURE=0x02014b50;
-    private final static int BASE_SIZE=46;
+    private final static long CDFH_SIGNATURE=0x02014b50;
+    private final static long BASE_SIZE=46;
     
     // position
     private long pos;
     
     // content
-    private int signature;            //  0- 4
-    private short versionMadeBy;      //  4- 6
-    private short versionNeeded;      //  6- 8
-    private short flags;              //  8-10
-    private short compression;        // 10-12
-    private short lastModifTime;      // 12-14
-    private short lastModifDate;      // 14-16
-    private int crc32;                // 16-20
-    private int compressedSize;       // 20-24
-    private int uncompressedSize;     // 24-28
-    private short fileNameLength;     // 28-30
-    private short extraFieldLength;   // 30-32
-    private short fileCommentLength;  // 32-34
-    private short diskStart;          // 34-36
-    private short internalAttributes; // 36-38
-    private int externalAttributes;   // 38-42
-    private int relativeOffset;       // 42-46
+    private long signature;          //  0- 4
+    private long versionMadeBy;      //  4- 6
+    private long versionNeeded;      //  6- 8
+    private long flags;              //  8-10
+    private long compression;        // 10-12
+    private long lastModifTime;      // 12-14
+    private long lastModifDate;      // 14-16
+    private long crc32;              // 16-20
+    private long compressedSize;     // 20-24
+    private long uncompressedSize;   // 24-28
+    private long fileNameLength;     // 28-30
+    private long extraFieldLength;   // 30-32
+    private long fileCommentLength;  // 32-34
+    private long diskStart;          // 34-36
+    private long internalAttributes; // 36-38
+    private long externalAttributes; // 38-42
+    private long relativeOffset;     // 42-46
     private byte[] filename;
     private byte[] extraField;
     private byte[] fileComment;
@@ -52,31 +52,32 @@ public class CDFH {
         CDFH header=new CDFH();
         header.pos=pos;
 
-        ByteBuffer buffer=ByteBuffer.allocate(BASE_SIZE);
+        ByteBuffer buffer=ByteBuffer.allocate((int)BASE_SIZE);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         byte[] array=buffer.array();
 
         rafid.seek(pos);
         rafid.read(array);
 
-        header.signature         = buffer.getInt(   0);
+        header.signature         = Utils.buildUnsigned(buffer.getInt(   0));
         if(header.signature!=CDFH_SIGNATURE) return null;
-        header.versionMadeBy     = buffer.getShort( 4);
-        header.versionNeeded     = buffer.getShort( 6);
-        header.flags             = buffer.getShort( 8);
-        header.compression       = buffer.getShort(10);
-        header.lastModifTime     = buffer.getShort(12);
-        header.lastModifDate     = buffer.getShort(14);
-        header.crc32             = buffer.getInt(  16);
-        header.compressedSize    = buffer.getInt(  20);
-        header.uncompressedSize  = buffer.getInt(  24);
-        header.fileNameLength    = buffer.getShort(28);
-        header.extraFieldLength  = buffer.getShort(30);
-        header.fileCommentLength = buffer.getShort(32);
-        header.diskStart         = buffer.getShort(34);
-        header.internalAttributes= buffer.getShort(36);
-        header.externalAttributes= buffer.getInt(  38);
-        header.relativeOffset    = buffer.getInt(  42);
+        
+        header.versionMadeBy     = Utils.buildUnsigned(buffer.getShort( 4));
+        header.versionNeeded     = Utils.buildUnsigned(buffer.getShort( 6));
+        header.flags             = Utils.buildUnsigned(buffer.getShort( 8));
+        header.compression       = Utils.buildUnsigned(buffer.getShort(10));
+        header.lastModifTime     = Utils.buildUnsigned(buffer.getShort(12));
+        header.lastModifDate     = Utils.buildUnsigned(buffer.getShort(14));
+        header.crc32             = Utils.buildUnsigned(buffer.getInt(  16));
+        header.compressedSize    = Utils.buildUnsigned(buffer.getInt(  20));
+        header.uncompressedSize  = Utils.buildUnsigned(buffer.getInt(  24));
+        header.fileNameLength    = Utils.buildUnsigned(buffer.getShort(28));
+        header.extraFieldLength  = Utils.buildUnsigned(buffer.getShort(30));
+        header.fileCommentLength = Utils.buildUnsigned(buffer.getShort(32));
+        header.diskStart         = Utils.buildUnsigned(buffer.getShort(34));
+        header.internalAttributes= Utils.buildUnsigned(buffer.getShort(36));
+        header.externalAttributes= Utils.buildUnsigned(buffer.getInt(  38));
+        header.relativeOffset    = Utils.buildUnsigned(buffer.getInt(  42));
 
         header.filename    = new byte[(int)header.fileNameLength];
         header.extraField  = new byte[(int)header.extraFieldLength];
@@ -90,11 +91,11 @@ public class CDFH {
     }
     
     public long size(){
-        return (long)BASE_SIZE+(long)fileNameLength+(long)extraFieldLength+(long)fileCommentLength;
+        return BASE_SIZE+fileNameLength+extraFieldLength+fileCommentLength;
     }
     
-    public int getFilenameLength(){
-        return (int)this.fileNameLength;
+    public long getFilenameLength(){
+        return this.fileNameLength;
     }
     
     public byte[] getRawFilename(){
@@ -102,19 +103,15 @@ public class CDFH {
     }
     
     public String getFilename(){
-        try{
-            return new String(this.filename,"UTF-8");
-        }catch(UnsupportedEncodingException uee){
-            return null;
-        }
+        return new String(this.filename, StandardCharsets.UTF_8);
     }
     
     public long getRelativeOffset(){
-        return (long)this.relativeOffset;
+        return this.relativeOffset;
     }
     
     public void writeFilenameOnly(RandomAccessFile rafid) throws IOException{
-        rafid.seek(this.pos+(long)BASE_SIZE);
+        rafid.seek(this.pos+BASE_SIZE);
         rafid.write(this.filename);
     }
     

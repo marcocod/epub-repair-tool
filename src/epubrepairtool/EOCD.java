@@ -19,21 +19,20 @@ public class EOCD {
     private final static int EOCD_SIGNATURE=0x06054b50;
     private final static int BASE_SIZE=22;
     
-    private final static int BUFFER_SIZE=4096;
     private final static int EOCD_MAX_SIZE=65558;
     
     // position
     private long pos;
     
     // content
-    private int signature;              //  0- 4
-    private short diskNumber;           //  4- 6
-    private short diskStarts;           //  6- 8
-    private short diskEntries;          //  8-10
-    private short totalEntries;         // 10-12
-    private int centralDirectorySize;   // 12-16
-    private int centralDirectoryOffset; // 16-20
-    private short commentLength;        // 20-22
+    private long signature;              //  0- 4
+    private long diskNumber;             //  4- 6
+    private long diskStarts;             //  6- 8
+    private long diskEntries;            //  8-10
+    private long totalEntries;           // 10-12
+    private long centralDirectorySize;   // 12-16
+    private long centralDirectoryOffset; // 16-20
+    private long commentLength;          // 20-22
     private byte[] comment;
     
     private EOCD(){
@@ -50,16 +49,19 @@ public class EOCD {
         rafid.seek(pos);
         rafid.read(array);
 
-        eocd.signature              = buffer.getInt(   0);
+        eocd.signature              = Utils.buildUnsigned(buffer.getInt(   0));
         if(eocd.signature!=EOCD_SIGNATURE) return null;
-        eocd.diskNumber             = buffer.getShort( 4);
-        eocd.diskStarts             = buffer.getShort( 6);
-        eocd.diskEntries            = buffer.getShort( 8);
-        eocd.totalEntries           = buffer.getShort(10);
-        eocd.centralDirectorySize   = buffer.getInt(  12);
-        eocd.centralDirectoryOffset = buffer.getInt(  16);
-        eocd.commentLength          = buffer.getShort(20);
-
+        
+        eocd.diskNumber             = Utils.buildUnsigned(buffer.getShort( 4));
+        eocd.diskStarts             = Utils.buildUnsigned(buffer.getShort( 6));
+        eocd.diskEntries            = Utils.buildUnsigned(buffer.getShort( 8));
+        eocd.totalEntries           = Utils.buildUnsigned(buffer.getShort(10));
+        eocd.centralDirectorySize   = Utils.buildUnsigned(buffer.getInt(  12));
+        eocd.centralDirectoryOffset = Utils.buildUnsigned(buffer.getInt(  16));
+        if(eocd.centralDirectoryOffset==0xffffffff) return null;
+        
+        eocd.commentLength          = Utils.buildUnsigned(buffer.getShort(20));
+        
         eocd.comment = new byte[(int)eocd.commentLength];
 
         rafid.read(eocd.comment);
@@ -71,26 +73,9 @@ public class EOCD {
         return (long)BASE_SIZE+(long)this.commentLength;
     }
     
-    public static long localeEOCD(RandomAccessFile rafid) throws IOException{
-        long size=rafid.length();
-        long endPos=size;
-        while(true){
-            long value=localeEOCD(rafid,endPos);
-            if(value>=0L){
-                return value;
-            }
-            endPos-=BUFFER_SIZE-3;
-            if(endPos<=0L){
-                return -1L;
-            }
-            if(size-endPos>EOCD_MAX_SIZE){
-                return -1L;
-            }
-        }
-    }
-    
-    private static long localeEOCD(RandomAccessFile rafid, long endPos) throws IOException{
-        int bufferSize=BUFFER_SIZE;
+    public static long locateEOCD(RandomAccessFile rafid) throws IOException{
+        long endPos=rafid.length();
+        int bufferSize=EOCD_MAX_SIZE;
         if(endPos<(long)bufferSize){
             bufferSize=(int)endPos;
         }
@@ -115,7 +100,7 @@ public class EOCD {
     }
     
     public long getCentralDirectoryOffset(){
-        return (long)this.centralDirectoryOffset;
+        return this.centralDirectoryOffset;
     }
     
 }

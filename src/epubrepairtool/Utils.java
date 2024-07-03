@@ -22,15 +22,15 @@ public class Utils {
     }
     
     public static long buildUnsigned(int value){
-        BUFFER.putLong(0L); // reset
+        BUFFER.putLong(0, 0L); // reset
         BUFFER.putInt(0, value);
-        return BUFFER.getLong();
+        return BUFFER.getLong(0);
     }
     
     public static long buildUnsigned(short value){
-        BUFFER.putLong(0L); // reset
+        BUFFER.putLong(0, 0L); // reset
         BUFFER.putShort(0, value);
-        return BUFFER.getLong();
+        return BUFFER.getLong(0);
     }
     
 }

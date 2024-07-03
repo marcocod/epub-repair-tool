@@ -38,7 +38,7 @@ public class Epub {
     public void analyze() throws IOException{
         RandomAccessFile rafid=new RandomAccessFile(this.file, "r");
 
-        long eocdPos=EOCD.localeEOCD(rafid);
+        long eocdPos=EOCD.locateEOCD(rafid);
         if(eocdPos>=0L){
             EOCD eocd=EOCD.read(rafid, eocdPos);
             int totalEntries=eocd.getTotalEntries();
