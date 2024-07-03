@@ -24,7 +24,7 @@ import javax.swing.event.ListSelectionListener;
  *
  * @author Marco
  */
-public class Gui extends javax.swing.JFrame {
+public class Main extends javax.swing.JFrame {
 
     private File parentDirectory=null;
     
@@ -36,7 +36,7 @@ public class Gui extends javax.swing.JFrame {
     /**
      * Creates new form Gui
      */
-    public Gui() {
+    public Main() {
         initComponents();
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -252,7 +252,7 @@ public class Gui extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Gui().setVisible(true);
+                new Main().setVisible(true);
             }
         });
     }
