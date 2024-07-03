@@ -95,24 +95,24 @@ public class CDFH {
     }
     
     public long getFilenameLength(){
-        return this.fileNameLength;
+        return fileNameLength;
     }
     
     public byte[] getRawFilename(){
-        return this.filename;
+        return filename;
     }
     
     public String getFilename(){
-        return new String(this.filename, StandardCharsets.UTF_8);
+        return new String(filename, StandardCharsets.UTF_8);
     }
     
     public long getRelativeOffset(){
-        return this.relativeOffset;
+        return relativeOffset;
     }
     
     public void writeFilenameOnly(RandomAccessFile rafid) throws IOException{
-        rafid.seek(this.pos+BASE_SIZE);
-        rafid.write(this.filename);
+        rafid.seek(pos+BASE_SIZE);
+        rafid.write(filename);
     }
     
 }

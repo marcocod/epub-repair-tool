@@ -80,15 +80,15 @@ public class LFH {
     }
     
     public long size(){
-        return BASE_SIZE+this.fileNameLength+this.extraFieldLength;
+        return BASE_SIZE+fileNameLength+extraFieldLength;
     }
     
     public long getFilenameLength(){
-        return this.fileNameLength;
+        return fileNameLength;
     }
     
     public byte[] getRawFilename(){
-        return this.filename;
+        return filename;
     }
     
     public String getFilename(){

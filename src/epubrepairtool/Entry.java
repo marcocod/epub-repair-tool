@@ -20,11 +20,11 @@ public class Entry {
     }
     
     public LFH getLFH(){
-        return this.lfHeader;
+        return lfHeader;
     }
     
     public CDFH getCDFH(){
-        return this.cdfHeader;
+        return cdfHeader;
     }
     
     public boolean mustToBeFixed(){

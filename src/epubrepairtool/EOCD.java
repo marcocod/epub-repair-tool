@@ -16,8 +16,8 @@ import java.nio.ByteOrder;
  */
 public class EOCD {
     
-    private final static int EOCD_SIGNATURE=0x06054b50;
-    private final static int BASE_SIZE=22;
+    private final static long EOCD_SIGNATURE=0x06054b50;
+    private final static long BASE_SIZE=22;
     
     private final static int EOCD_MAX_SIZE=65558;
     
@@ -42,7 +42,7 @@ public class EOCD {
         EOCD eocd=new EOCD();
         eocd.pos=pos;
 
-        ByteBuffer buffer=ByteBuffer.allocate(BASE_SIZE);
+        ByteBuffer buffer=ByteBuffer.allocate((int)BASE_SIZE);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         byte[] array=buffer.array();
 
@@ -58,7 +58,7 @@ public class EOCD {
         eocd.totalEntries           = Utils.buildUnsigned(buffer.getShort(10));
         eocd.centralDirectorySize   = Utils.buildUnsigned(buffer.getInt(  12));
         eocd.centralDirectoryOffset = Utils.buildUnsigned(buffer.getInt(  16));
-        if(eocd.centralDirectoryOffset==0xffffffff) return null;
+        if(eocd.centralDirectoryOffset==0xffffffff) return null; // ZIP64
         
         eocd.commentLength          = Utils.buildUnsigned(buffer.getShort(20));
         
@@ -70,7 +70,7 @@ public class EOCD {
     }
     
     public long size(){
-        return (long)BASE_SIZE+(long)this.commentLength;
+        return BASE_SIZE+commentLength;
     }
     
     public static long locateEOCD(RandomAccessFile rafid) throws IOException{
@@ -86,7 +86,7 @@ public class EOCD {
         rafid.read(array);
 
         for(int k=bufferSize-4;k>=0;k--){
-            int signature=buffer.getInt(k);
+            long signature=Utils.buildUnsigned(buffer.getInt(k));
             if(signature==EOCD_SIGNATURE){
                 return endPos-bufferSize+k;
             }
@@ -96,11 +96,11 @@ public class EOCD {
     }
     
     public int getTotalEntries(){
-        return (int)this.totalEntries;
+        return (int)totalEntries;
     }
     
     public long getCentralDirectoryOffset(){
-        return this.centralDirectoryOffset;
+        return centralDirectoryOffset;
     }
     
 }
