@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package epubrepairtool;
+package epubrepairtool.gui;
 
+import epubrepairtool.core.Epub;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
