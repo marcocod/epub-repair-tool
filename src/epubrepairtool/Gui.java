@@ -49,7 +49,8 @@ public class Gui extends javax.swing.JFrame {
         });
     }
     
-    private void scanDirectory(File selectedDirectory){
+    private void scanDirectory(){
+        File selectedDirectory=new File(directoryTextField.getText());
         epubListModel.clear();
         File[] files=selectedDirectory.listFiles(new FileFilter(){
             public boolean accept(File file){
@@ -103,7 +104,7 @@ public class Gui extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         fileList = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        repairButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ePub repair tool");
@@ -129,10 +130,10 @@ public class Gui extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Dialog", 3, 12)); // NOI18N
         jLabel1.setText("List of ePub with invalid entries");
 
-        jButton2.setText("Fix files");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        repairButton.setText("Repair files");
+        repairButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                repairButtonActionPerformed(evt);
             }
         });
 
@@ -157,7 +158,7 @@ public class Gui extends javax.swing.JFrame {
                         .addComponent(directoryTextField))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(repairButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -177,7 +178,7 @@ public class Gui extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(repairButton)
                 .addContainerGap())
         );
 
@@ -200,22 +201,29 @@ public class Gui extends javax.swing.JFrame {
             File selectedDirectory = chooser.getSelectedFile();
             parentDirectory=selectedDirectory.getParentFile();
             directoryTextField.setText(selectedDirectory.getAbsolutePath());
-            scanDirectory(selectedDirectory);
+            scanDirectory();
         }
     }//GEN-LAST:event_browseButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void repairButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_repairButtonActionPerformed
         // TODO add your handling code here:
+        int repairedFiles=0;
         
         for(int k=0;k<epubList.size();k++){
             Epub epub=epubList.get(k);
             try{
                 epub.fix();
+                repairedFiles++;
             }catch(IOException ioe){
                 JOptionPane.showMessageDialog(null, "Error while fixing the epub "+epub.getFile().getName(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+        scanDirectory();
+        
+        if(repairedFiles>0){
+            JOptionPane.showMessageDialog(null, "All files have been fixed", "Information", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_repairButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -253,10 +261,10 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JTextField directoryTextField;
     private javax.swing.JList<String> fileList;
     private javax.swing.JTable filenamesTable;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton repairButton;
     // End of variables declaration//GEN-END:variables
 }

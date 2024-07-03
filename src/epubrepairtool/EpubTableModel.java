@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class EpubTableModel extends DefaultTableModel{
     
-    private final String[] HEADERS  = {"Local File Header","Central Directory File Header"};
+    private final String[] HEADERS  = {"Local File Header Filename","Central Directory File Header Filename"};
     
     private JTable table;
     

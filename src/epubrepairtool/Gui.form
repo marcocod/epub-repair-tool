@@ -45,7 +45,7 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="jButton2" min="-2" pref="124" max="-2" attributes="0"/>
+                      <Component id="repairButton" min="-2" pref="124" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -72,7 +72,7 @@
                   <Component id="jScrollPane2" pref="425" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+              <Component id="repairButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -140,12 +140,12 @@
         <Property name="text" type="java.lang.String" value="List of ePub with invalid entries"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="repairButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Fix files"/>
+        <Property name="text" type="java.lang.String" value="Repair files"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="repairButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
