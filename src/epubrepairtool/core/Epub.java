@@ -19,7 +19,7 @@ public class Epub {
     private File file;
     
     private EOCD eocd=null;
-    private ArrayList<Entry> entryList=null;
+    private ArrayList<Entry> invalidEntryList=null;
     
     public Epub(File file){
         this.file=file;
@@ -41,7 +41,7 @@ public class Epub {
             eocd=EOCD.read(rafid, eocdPos);
             if(eocd!=null){
                 int totalEntries=eocd.getTotalEntries();
-                entryList=new ArrayList<Entry>();
+                invalidEntryList=new ArrayList<Entry>();
                 long pos=eocd.getCentralDirectoryOffset();
                 for(int k=0;k<totalEntries;k++){
                     CDFH cdfHeader=CDFH.read(rafid, pos);
@@ -52,7 +52,7 @@ public class Epub {
                     }
                     Entry entry=new Entry(lfHeader,cdfHeader);
                     if(entry.mustToBeFixed()){
-                        entryList.add(entry);
+                        invalidEntryList.add(entry);
                     }
                 }
             }
@@ -61,8 +61,8 @@ public class Epub {
     }
     
     public boolean mustToBeFixed(){
-        if(eocd!=null && entryList!=null){
-            return entryList.size()>0;
+        if(eocd!=null && invalidEntryList!=null){
+            return invalidEntryList.size()>0;
         }else{
             return false;
         }
@@ -72,8 +72,8 @@ public class Epub {
         if(this.mustToBeFixed()==true){
             if(file.canWrite()){
                 RandomAccessFile rafid=new RandomAccessFile(file, "rw");
-                for(int k=0;k<entryList.size();k++){
-                    Entry entry=entryList.get(k);
+                for(int k=0;k<invalidEntryList.size();k++){
+                    Entry entry=invalidEntryList.get(k);
                     if(entry.mustToBeFixed()==true){
                         entry.fix();
                         entry.getCDFH().writeFilenameOnly(rafid);
@@ -85,12 +85,14 @@ public class Epub {
     }
     
     public String[][] getInvalidFilenames(){
-        if(entryList!=null){
-            String[][] invalidFilenames=new String[entryList.size()][2];
-            for(int k=0;k<entryList.size();k++){
-                Entry entry=entryList.get(k);
-                invalidFilenames[k][0]=entry.getLFH().getFilename();
-                invalidFilenames[k][1]=entry.getCDFH().getFilename();
+        if(invalidEntryList!=null){
+            String[][] invalidFilenames=new String[invalidEntryList.size()][2];
+            for(int k=0;k<invalidEntryList.size();k++){
+                Entry entry=invalidEntryList.get(k);
+                if(entry.mustToBeFixed()==true){
+                    invalidFilenames[k][0]=entry.getLFH().getFilename();
+                    invalidFilenames[k][1]=entry.getCDFH().getFilename();
+                }
             }
             return invalidFilenames;
         }else{

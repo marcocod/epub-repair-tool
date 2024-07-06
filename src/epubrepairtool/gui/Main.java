@@ -31,7 +31,7 @@ public class Main extends javax.swing.JFrame {
     private DefaultListModel epubListModel=new DefaultListModel();
     private ArrayList<Epub> epubList=new ArrayList<Epub>();
     
-    private EpubTableModel epubTableModel=new EpubTableModel();
+    private InvalidEntriesTableModel invalidEntriesTableModel=new InvalidEntriesTableModel();
     
     /**
      * Creates new form Gui
@@ -82,9 +82,9 @@ public class Main extends javax.swing.JFrame {
     private void refreshEpubModelTable(){
         int sel=fileList.getSelectedIndex();
         if(sel==-1){
-            epubTableModel.unsetData();
+            invalidEntriesTableModel.unsetData();
         }else{
-            epubTableModel.setData(epubList.get(sel), filenamesTable);
+            invalidEntriesTableModel.setData(epubList.get(sel), filenamesTable);
         }
     }
 
@@ -119,7 +119,7 @@ public class Main extends javax.swing.JFrame {
 
         directoryTextField.setEditable(false);
 
-        filenamesTable.setModel(epubTableModel);
+        filenamesTable.setModel(invalidEntriesTableModel);
         jScrollPane2.setViewportView(filenamesTable);
 
         jLabel2.setFont(new java.awt.Font("Dialog", 3, 12)); // NOI18N
