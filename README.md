@@ -5,11 +5,16 @@ This tool simply copies the filename field of LFH in the filename field of CDFH 
 
 # Typical usage
 When a DRM protect ePub contains invalid filename field in one or more entries the decrypting tool INEPT gives error when it tries to decode the string of the filename.
+
 ![alt text](https://github.com/marcocod/epub-repair-tool/blob/master/img/inept.png?raw=true)
+
 If you open the ePub file with a archive manager program as 7zip you can see that some filename contains invalid characters.
+
 ![alt text](https://github.com/marcocod/epub-repair-tool/blob/master/img/7zip.png?raw=true)
+
 Note that since the filename contains the entire relative path, archive manager programs can show the corrupted entry in the wrong subdirectory.
 This tool analyzes a folder with ePub files and allows to fix the corrupeted entries.
+
 ![alt text](https://github.com/marcocod/epub-repair-tool/blob/master/img/jar.png?raw=true)
 
 # How to build
