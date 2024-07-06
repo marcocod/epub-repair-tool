@@ -18,8 +18,8 @@ This tool analyzes a folder with ePub files and allows to fix the corrupted entr
 ![alt text](https://github.com/marcocod/epub-repair-tool/blob/master/img/jar.png?raw=true)
 
 Only ePub with problems are shown in the list. For each file you can check the invalid entries detected by the tool.
-Clicking on button "Repair files" you fix the problem for all listed files.
-Note that this tool doens't create any backup file.
+Clicking on button "Repair files" you can fix the problem for all listed files.
+Note that this tool doesn't create any backup file.
 
 
 # How to build
