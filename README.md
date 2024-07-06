@@ -13,14 +13,20 @@ If you open the ePub file with a archive manager program as 7zip you can see tha
 ![alt text](https://github.com/marcocod/epub-repair-tool/blob/master/img/7zip.png?raw=true)
 
 Note that since the filename contains the entire relative path, archive manager programs can show the corrupted entry in the wrong subdirectory.
-This tool analyzes a folder with ePub files and allows to fix the corrupeted entries.
+This tool analyzes a folder with ePub files and allows to fix the corrupted entries.
 
 ![alt text](https://github.com/marcocod/epub-repair-tool/blob/master/img/jar.png?raw=true)
+
+Only ePub with problems are shown in the list. For each file you can check the invalid entries detected by the tool.
+Clicking on button "Repair files" you fix the problem for all listed files.
+Note that this tool doens't create any backup file.
+
 
 # How to build
 The repository contains:
 - the java source code in the src folder
 - the NetBeans project files in the nbproject folder
+
 The code can be built with NetBeans version 8.2 or above opening the repository folder as project folder.
 
 # How to launch
