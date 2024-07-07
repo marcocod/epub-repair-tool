@@ -15,7 +15,7 @@ The ePub file is a zip archive and in this format the information of each entry 
 - Local File Header (LFH)
 - Central Directory File Header (CDFH)
 
-Usually the filename field in both these headers (CDFH and LFH) should be equal, but sometimes it happens that for few entries of the ePub file the filename in the CDFH is corrupted and differs from the filename contained in the LFH.
+Usually the filename field in both these headers (CDFH and LFH) should be equal, but sometimes it happens that in few entries the filename in the CDFH is corrupted and differs from the filename contained in the LFH.
 
 # How the tool works
 This tool analyzes the ePub files contained in the selected folder and detects the files with entries where filename fields of LFH and CDFH are not consistent.
@@ -24,7 +24,9 @@ These files are shown in the list on the left (files in read only mode will be s
 ![alt text](https://github.com/marcocod/epub-repair-tool/blob/master/img/jar.png?raw=true)
 
 For each file you can check in the table on the right the invalid entries detected by the tool.
+
 Clicking on button "Repair files" the program overwrites the invalid filename field of CDFH with the correct filename field of LFH.
+
 Note that this tool doesn't create any backup file.
 
 # How to build
