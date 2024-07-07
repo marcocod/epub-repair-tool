@@ -4,7 +4,7 @@ In these cases the decrypting tool INEPT gives error when it tries to decode the
 
 ![alt text](https://github.com/marcocod/epub-repair-tool/blob/master/img/inept.png?raw=true)
 
-If you open the ePub file with a archive manager program as 7zip you can see that some filenames contains invalid characters.
+If you open the ePub file with a archive manager program as 7zip you can see that some filenames contain invalid characters.
 
 ![alt text](https://github.com/marcocod/epub-repair-tool/blob/master/img/7zip.png?raw=true)
 
@@ -34,6 +34,7 @@ The repository contains:
 - the NetBeans project files in the nbproject folder
 
 The code can be built with NetBeans version 8.2 or above opening the repository folder as project folder.
+The build requires a Java Development Kit (JDK) version 8 or above.
 
 # How to launch
 The release is a Java Archive (JAR) that can be executed with a Java Runtime Environment (JRE) version 8 or above with the following command:
