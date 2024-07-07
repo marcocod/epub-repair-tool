@@ -1,5 +1,5 @@
 # Introduction
-I noticed that ePub with DRM protection sometimes contains invalid filename fields in one or more entries.
+I noticed that ePub files with DRM protection sometimes contain an invalid filename field for one or more entries.
 In these cases the decrypting tool INEPT gives error when it tries to decode the string of the filename.
 
 ![alt text](https://github.com/marcocod/epub-repair-tool/blob/master/img/inept.png?raw=true)
@@ -15,7 +15,7 @@ The ePub file is a zip archive and in this format the information of each entry 
 - Local File Header (LFH)
 - Central Directory File Header (CDFH)
 
-Usually the filename field in both these headers (CDFH and LFH) should be equal, but sometimes ePub with DRM protection contains few entries where the filename in the CDFH is corrupted and differs from the filename contained in the LFH.
+Usually the filename field in both these headers (CDFH and LFH) should be equal, but sometimes ePub with DRM protection contains few entries where the filename in the CDFH is corrupted and differs from the correct filename contained in the LFH.
 
 # How the tool works
 ePub repair tool analyzes the ePub files contained in the selected folder and detects the files with entries where filename fields of LFH and CDFH are not consistent.
