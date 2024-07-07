@@ -26,6 +26,8 @@ import javax.swing.event.ListSelectionListener;
  */
 public class Main extends javax.swing.JFrame {
 
+    private final static String VERSION="v1.0";
+    
     private File parentDirectory=null;
     
     private DefaultListModel epubListModel=new DefaultListModel();
@@ -38,6 +40,8 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        
+        setTitle("ePub repair tool ("+VERSION+")");
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(screenSize.width/2-this.getSize().width/2, screenSize.height/2-this.getSize().height/2);
