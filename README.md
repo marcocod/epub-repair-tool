@@ -18,7 +18,7 @@ The ePub file is a zip archive and in this format the information of each entry 
 Usually the filename field in both these headers (CDFH and LFH) should be equal, but sometimes ePub with DRM protection contains few entries where the filename in the CDFH is corrupted and differs from the filename contained in the LFH.
 
 # How the tool works
-This tool analyzes the ePub files contained in the selected folder and detects the files with entries where filename fields of LFH and CDFH are not consistent.
+ePub repair tool analyzes the ePub files contained in the selected folder and detects the files with entries where filename fields of LFH and CDFH are not consistent.
 These files are shown in the list on the left (files in read only mode will be skipped).
 
 ![alt text](https://github.com/marcocod/epub-repair-tool/blob/master/img/jar.png?raw=true)
